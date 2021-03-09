@@ -30,20 +30,9 @@ html
           $.ajax({url: '/ext/summary', success: function(json){
             var supplyString = json.data[0].supply;
             var diffString = json.data[0].difficulty;
-            var hashrateString = json.data[0].hashrate;
-            if (!isNaN(json.data[0].difficulty)) {
-              diffString = parseFloat(json.data[0].difficulty).toFixed(2);
-            }
-            if (!isNaN(json.data[0].supply)) {
-              supplyString = parseInt(parseFloat(json.data[0].supply).toFixed(0)).toLocaleString('en');
-            }
-            if (!isNaN(json.data[0].hashrate)) {
-              hashrateString = parseFloat(json.data[0].hashrate).toLocaleString('en');
-            }
             $("#supply").text(supplyString);
             $("#difficulty").text(diffString);
             $("#difficultyHybrid").text(json.data[0].difficultyHybrid);
-            $("#hashrate").text(hashrateString);
             $("#lastPrice").text(parseFloat(json.data[0].lastPrice).toFixed(8) + ' #{settings.markets.exchange}'.toUpperCase());
             $("#marketCap").text((parseFloat(json.data[0].lastPrice).toFixed(8) * parseInt(parseFloat(json.data[0].supply).toFixed(0))).toLocaleString('en') + ' #{settings.markets.exchange}'.toUpperCase());
             $("#lblConnections").text(json.data[0].connections + ' connections');
@@ -132,11 +121,6 @@ html
             a.nav-link(href='/')
               span.fa.fa-search
               span.menu-text #{settings.locale.menu_explorer}
-          if settings.heavy == true
-            li#reward
-              a.nav-link(href='/reward')
-                span.fa.fa-star
-                span.menu-text #{settings.locale.menu_reward}
           if settings.display.movement == true
             li#movement
               a.nav-link.loading(href='/movement')
@@ -167,30 +151,6 @@ html
         .col-md-2
           .card.card-default.d-none.d-md-block.d-block
             .card-header
-              if settings.nethash_units == 'K'
-                strong #{settings.locale.network} (KH/s)
-              else if settings.nethash_units == 'M'
-                strong #{settings.locale.network} (MH/s)
-              else if settings.nethash_units == 'G'
-                strong #{settings.locale.network} (GH/s)
-              else if settings.nethash_units == 'T'
-                strong #{settings.locale.network} (TH/s)
-              else if settings.nethash_units == 'P'
-                strong #{settings.locale.network} (PH/s)
-              else if settings.nethash_units == 'H'
-                strong #{settings.locale.network} (H/s)
-            .card-body
-              #hashratecard
-                span.header-icons.fa.fa-gears
-                if settings.index.difficulty == 'Hybrid'
-                  label#hashrate -
-                  <br>
-                  label#lblX1
-                else
-                  label#hashrate -
-        .col-md-2
-          .card.card-default.d-none.d-md-block.d-block
-            .card-header
               strong #{settings.locale.difficulty}
             .card-body
               #difficultycard
@@ -217,30 +177,6 @@ html
                   label#lblX1
                 else
                   label#supply -
-                if settings.index.show_market_cap == true && settings.index.show_market_cap_over_price != true  
-                  <br>  
-                  label ( 
-                  label#marketCap - 
-                  label )
-        .col-md-2
-          .card.card-default.d-none.d-md-block.d-block
-            if settings.index.show_market_cap != true || settings.index.show_market_cap_over_price != true
-              .card-header
-                strong #{settings.markets.exchange} Price
-              .card-body
-                #pricecard
-                  span.header-icons.fa.fa-rocket
-                  if settings.index.difficulty == 'Hybrid'
-                    label#lastPrice -
-                    <br>
-                    label#lblX1
-                  else
-                    label#lastPrice -
-          if settings.index.show_market_cap == true && settings.index.show_market_cap_over_price == true
-            .card-header
-              strong Market Cap
-            .card-body
-              label#marketCap -
 
       .row.text-center(style='margin-top:10px;margin-bottom:20px;')
         form.form-inline.col-12.d-flex.justify-content-center(method='post', action='/search')
