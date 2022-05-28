@@ -1,6 +1,6 @@
-var mongoose = require('mongoose')
-  , Schema = mongoose.Schema;
- 
+var mongoose = require('mongoose'),
+   Schema = mongoose.Schema;
+
 var TxSchema = new Schema({
   txid: { type: String, lowercase: true, unique: true, index: true},
   vin: { type: Array, default: [] },
@@ -9,6 +9,8 @@ var TxSchema = new Schema({
   timestamp: { type: Number, default: 0, index: true },
   blockhash: { type: String, index: true },
   blockindex: {type: Number, default: 0, index: true},
+  tx_type: { type: String, default: null },
+  op_return: { type: String, default: null }
 }, {id: false});
 
 TxSchema.index({total: 1, total: -1, blockindex: 1, blockindex: -1});
